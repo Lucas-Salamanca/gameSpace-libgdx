@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PantallaJuego implements Screen {
 
-	private SpaceNavigation game;
+	//private SpaceNavigation game;
 	private OrthographicCamera camera;	
 	private SpriteBatch batch;
 	private Sound explosionSound;
@@ -24,11 +24,12 @@ public class PantallaJuego implements Screen {
 	private MundoJuego mundoJuego;
 	private HashMap<String, Texture> texturas; //guarda todas las texturas en un hashmap
 
-	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
+	public PantallaJuego( int ronda, int vidas, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
-		this.game = game;
+		//this.game = game;
 		
-		batch = game.getBatch();
+		//batch = game.getBatch();
+		batch = SpaceNavigation.getInstance().getBatch();
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, 800, 640);
 		//inicializar assets; musica de fondo y efectos de sonido
@@ -47,7 +48,7 @@ public class PantallaJuego implements Screen {
 		texturas.put("Tirador", new Texture(Gdx.files.internal("NaveTirador.png")));
 		texturas.put("Bala",new Texture(Gdx.files.internal("Rocket2.png")));
 		
-		mundoJuego = new MundoJuego(game,ronda,vidas,score,velXAsteroides,velYAsteroides,cantAsteroides
+		mundoJuego = new MundoJuego(ronda,vidas,score,velXAsteroides,velYAsteroides,cantAsteroides
 									,texturas);
         	
 	}
@@ -56,16 +57,20 @@ public class PantallaJuego implements Screen {
 	public void dibujaEncabezado() {
 
 		CharSequence str = "Vidas: "+mundoJuego.nave4().getVidas()+" Ronda: "+mundoJuego.getRondas();
-		game.getFont().getData().setScale(2f);		
-		game.getFont().draw(batch, str, 10, 30);
-		game.getFont().draw(batch, "Score:"+mundoJuego.getScore(), Gdx.graphics.getWidth()-150, 30);
-		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
+		SpaceNavigation.getInstance().getFont().getData().setScale(2f);
+		SpaceNavigation.getInstance().getFont().draw(batch, str, 10, 30);
+		SpaceNavigation.getInstance().getFont().draw(batch, "Score:"+mundoJuego.getScore(), Gdx.graphics.getWidth()-150, 30);
+		SpaceNavigation.getInstance().getFont().draw(batch, "HighScore:"+SpaceNavigation.getInstance().getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
+		//game.getFont().getData().setScale(2f);		
+		//game.getFont().draw(batch, str, 10, 30);
+		//game.getFont().draw(batch, "Score:"+mundoJuego.getScore(), Gdx.graphics.getWidth()-150, 30);
+		//game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
 	@Override
 	public void render(float delta) {
 		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		  mundoJuego.colisionBalaAsteroide();
+		  mundoJuego.colisionBalaEnemigo();
 		  mundoJuego.updateEnemigo(delta, texturas);
 		  mundoJuego.colisionEntreEnemigos();
 		  mundoJuego.procesarBalaEnemiga();
@@ -89,11 +94,12 @@ public class PantallaJuego implements Screen {
 	      
 	      
 	      if (mundoJuego.nave4().estaDestruido()) {
-  			if (mundoJuego.getScore() > game.getHighScore())
-  				game.setHighScore(mundoJuego.getScore());
-	    	Screen ss = new PantallaGameOver(game);
+  			if (mundoJuego.getScore() > SpaceNavigation.getInstance().getHighScore())
+  				SpaceNavigation.getInstance().setHighScore(mundoJuego.getScore());
+	    	Screen ss = new PantallaGameOver();
   			ss.resize(1200, 800);
-  			game.setScreen(ss);
+  			SpaceNavigation.getInstance().setScreen(ss);
+  			//game.setScreen(ss);
   			dispose();
   		  }
 	      
@@ -105,11 +111,21 @@ public class PantallaJuego implements Screen {
 	      
 	      batch.end();
 	     
-	      Screen ss = mundoJuego.nivelSuperado();
-	      if (ss != null) {
-			ss.resize(1200, 800);
-			game.setScreen(ss);
-			dispose();
+	      
+	      if (mundoJuego.nivelSuperado()) {
+
+	    	  Screen ss = new PantallaJuego( 
+	    			  mundoJuego.getRondas(),
+	    			  mundoJuego.nave4().getVidas(),
+	    			  mundoJuego.getScore(),
+	    			  mundoJuego.getVelXAsteroide(),
+	    			  mundoJuego.getVelYAsteroide(),
+	    			  mundoJuego.getCantEnemigos()
+	    			  );
+	    	  ss.resize(1200, 800);
+	    	  SpaceNavigation.getInstance().setScreen(ss);
+	    	  //game.setScreen(ss);
+	    	  dispose();
 		  }
 	    	 
 	}

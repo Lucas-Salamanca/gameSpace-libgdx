@@ -13,13 +13,22 @@ public class SpaceNavigation extends Game {
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private int highScore;	
-
+	private static  SpaceNavigation instance;	
+	
+	public SpaceNavigation() {
+		instance = this;
+	}
+	
+	public static SpaceNavigation getInstance() {
+		return instance;
+	}
+	
 	public void create() {
 		highScore = 0;
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // usa Arial font x defecto
 		font.getData().setScale(2f);
-		Screen ss = new PantallaMenu(this);
+		Screen ss = new PantallaMenu();
 		this.setScreen(ss);
 	}
 

@@ -21,12 +21,12 @@ public class MundoJuego {
 	private ArrayList<Bullet> balasEnemigo = new ArrayList<>();
 	private ArrayList<Bullet> balas = new ArrayList<>();
 	
-	private SpaceNavigation game;
+	//private SpaceNavigation game;
 	
-	public MundoJuego(SpaceNavigation game, int ronda, int vidas, int score,  
+	public MundoJuego( int ronda, int vidas, int score,  
 			int velXEnemigos, int velYEnemigos, int cantEnemigos, HashMap <String, Texture> texturas) {
 		
-		this.game = game;
+		//this.game = game;
 		this.ronda = ronda;
 		this.score = score;
 		this.velXEnemigos = velXEnemigos;
@@ -60,7 +60,7 @@ public class MundoJuego {
 	    }
 	}
 	
-	public void colisionBalaAsteroide() {
+	public void colisionBalaEnemigo() {
 		if (!nave.estaHerido()) {
 			for (int i = 0; i < balas.size(); i++) {
 	            Bullet b = balas.get(i);
@@ -77,8 +77,8 @@ public class MundoJuego {
 	            			enemigos2.remove(j);
 	            			j--;
 	            			score+=10;
-	            			if(score > game.getHighScore()) {
-	            				game.setHighScore(score);
+	            			if(score > SpaceNavigation.getInstance().getHighScore()) {
+	            				SpaceNavigation.getInstance().setHighScore(score);
 	            			}
 	            		}
 	            		break;
@@ -98,16 +98,14 @@ public class MundoJuego {
 		if (!nave.estaHerido()) {
 
 			//actualizar movimiento de asteroides dentro del area
-			for (Enemigos ball : enemigos1) {
-				ball.update();
-				if(ball instanceof Tirador) {
-					Tirador t = (Tirador) ball;
-		        	  
-					if(t.debeDisparar(delta)) {
-						Bullet balasCreada = new Bullet(t.getx(),t.gety(),0,-5,texturas.get("Bala"));
-						balasEnemigo.add(balasCreada);
+			for (Enemigos enemigo : enemigos1) {
+				enemigo.update();
+				if(enemigo.debeDisparar(delta)) {
+
+					Bullet balasCreada = new Bullet(enemigo.getx(),enemigo.gety(),0,-5,texturas.get("Bala"));
+					balasEnemigo.add(balasCreada);
 		        		  
-					}
+					
 				}
 		          
 			}
@@ -168,17 +166,16 @@ public class MundoJuego {
 		}
 	}
 	
-	public PantallaJuego nivelSuperado() {
+	public boolean nivelSuperado() {
 		if(enemigos1.size() == 0) {
 			ronda ++;
 			velXEnemigos ++;
 			velYEnemigos ++;
 			cantEnemigos += 3;
-			PantallaJuego ss = new PantallaJuego(game,ronda,nave.getVidas(),score,velXEnemigos,velYEnemigos
-					,cantEnemigos);
-			return ss;
+
+			return true;
 		}
-		return null;
+		return false;
 	}
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);

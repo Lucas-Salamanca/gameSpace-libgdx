@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+
+
 import java.util.Random;
 
 public class Tirador extends Enemigos {
@@ -11,6 +13,7 @@ public class Tirador extends Enemigos {
 		super(x,y,20,xSpeed,ySpeed,tx,3);
 	}
 	
+	@Override
 	public boolean debeDisparar(float delta) {
 		timerDisparo += delta;
 		if(timerDisparo >= tiempoEntreDisparos) {
@@ -25,4 +28,6 @@ public class Tirador extends Enemigos {
 		}
 		return false;
 	}
+	
+
 }	
