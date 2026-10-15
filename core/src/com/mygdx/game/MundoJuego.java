@@ -43,8 +43,8 @@ public class MundoJuego {
 		//crear asteroides
 		Random r = new Random();
 	    for (int i = 0; i < cantEnemigos; i++) {
-	    	int x = r.nextInt((int)Gdx.graphics.getWidth());
-	    	int y = 50+r.nextInt((int)Gdx.graphics.getHeight()-50);
+	    	int x = r.nextInt(1200);
+	    	int y = 50+r.nextInt(800-50);
 	    	int vx = velXEnemigos+r.nextInt(4);
 	    	int vy = velYEnemigos+r.nextInt(4);
 	    	
