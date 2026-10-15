@@ -136,7 +136,7 @@ public class MundoJuego {
 				be.update();
 					
 	
-				// Colisión con la nave principal
+				// Colisiï¿½n con la nave principal
 				if (nave.checkCollision(be)) { 
 					be.setDestruido(true);
 				}
