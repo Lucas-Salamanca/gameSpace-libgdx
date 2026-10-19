@@ -17,7 +17,6 @@ public class Nave4 {
     private int vidas = 5;
     private float xVel = 0;
     private float yVel = 0;
-    private float vel = 3f;
     private Sprite spr;
     private Sound sonidoHerido;
     private Sound soundBala;
@@ -39,12 +38,13 @@ public class Nave4 {
     public void draw(SpriteBatch batch, MundoJuego juego){
         float x =  spr.getX();
         float y =  spr.getY();
+        float vel = 300f * Gdx.graphics.getDeltaTime();
         if (!herido) {
 	        // que se mueva con teclado
-	        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) xVel = -vel;
-	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) xVel = vel;
-        	if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) yVel = -vel;     
-	        if (Gdx.input.isKeyPressed(Input.Keys.UP)) yVel = vel;
+	        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) x -= vel;
+	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) x += vel;
+        	if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) y -= vel;     
+	        if (Gdx.input.isKeyPressed(Input.Keys.UP)) y += vel;
         	
 	        
 	        // que se mantenga dentro de los bordes de la ventana
@@ -60,7 +60,7 @@ public class Nave4 {
 	        	yVel*=-1;
 	        
 	        
-	        spr.setPosition(x+xVel, y+yVel);   
+	        spr.setPosition(x, y);   
          
  		    spr.draw(batch);
         } else {
