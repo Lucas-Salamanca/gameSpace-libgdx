@@ -5,15 +5,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.disparos.BulletStrategy;
 import com.mygdx.game.disparos.MovimientoRecto;
 
+// Builder concreto: arma la nave básica (la que ya existía).
+// Los valores por defecto son los de la nave original.
 public class NaveBasicaBuilder implements NaveBuilder {
     private int x, y;
     private Texture tx, txBala;
     private Sound sonidoHerido, soundBala;
-    private int vidas = 5;
-    private float velocidad = 300f;
-    private int tiempoHeridoMax = 50;
-    private BulletStrategy estrategia = new MovimientoRecto(0, 180);
+    private int vidas = 5;                                           // vidas por defecto
+    private float velocidad = 300f;                                  // velocidad por defecto
+    private int tiempoHeridoMax = 50;                                // frames en estado herido
+    private BulletStrategy estrategia = new MovimientoRecto(0, 180); // bala recta hacia arriba
 
+    // Cada paso guarda el valor y devuelve this para poder encadenar llamadas
     @Override public NaveBuilder posicion(int x, int y) { this.x = x; this.y = y; return this; }
     @Override public NaveBuilder sprite(Texture tx) { this.tx = tx; return this; }
     @Override public NaveBuilder sonidoHerido(Sound s) { this.sonidoHerido = s; return this; }
@@ -25,6 +28,7 @@ public class NaveBasicaBuilder implements NaveBuilder {
     @Override public NaveBuilder velocidad(float v) { this.velocidad = v; return this; }
     @Override public NaveBuilder tiempoHeridoMax(int t) { this.tiempoHeridoMax = t; return this; }
 
+    // Crea la nave con todo lo configurado
     @Override
     public Nave4 build() {
         return new Nave4(x, y, tx, sonidoHerido, txBala, soundBala,
