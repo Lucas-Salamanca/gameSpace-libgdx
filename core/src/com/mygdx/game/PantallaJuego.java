@@ -23,11 +23,12 @@ public class PantallaJuego implements Screen {
 	private Music gameMusic;
 	private MundoJuego mundoJuego;
 	private HashMap<String, Texture> texturas; //guarda todas las texturas en un hashmap
+	private ControladorNarrativa controlNarrativa;
 
 	public PantallaJuego(int ronda, int vidas, int score, int velXAsteroides, int velYAsteroides, int cantAsteroides)
 	{
 		//this.game = game;
-		
+		controlNarrativa = new ControladorNarrativa(); //inicializa las narrativas
 		//batch = game.getBatch();
 		batch = SpaceNavigation.getInstance().getBatch();
 		camera = new OrthographicCamera();	
@@ -74,18 +75,8 @@ public class PantallaJuego implements Screen {
 
 		batch.begin();
 		dibujaEncabezado();
-		if(mundoJuego.getScore() == 0) {
-			SpaceNavigation.getInstance().getFont().draw(batch,"Buscando señales de rescate... Sin resultados",300,770);
-		}
-		else if(mundoJuego.getScore() >= 50 && mundoJuego.getScore() <= 60) {
-			SpaceNavigation.getInstance().getFont().draw(batch, "Fragmento recurepado: \n"
-					+ "'...la flota principal fue destruida en el sector 4...'",300,770);
-		}else if(mundoJuego.getScore() >= 100 && mundoJuego.getScore() <=110) {
-			SpaceNavigation.getInstance().getFont().draw(batch,"Fragmento recuperado: \n"
-					+ "'...el artefacto enemigo no debe caer en manos de la federacion...'",300,770);
-		}else if(mundoJuego.getScore() >= 150 && mundoJuego.getScore() <= 160) {
-			SpaceNavigation.getInstance().getFont().draw(batch,"Archivo descifrado por completo: \n"
-					+ "'Tu eres la ultima esperanza de la base estelar, Sobrevive",300,770);
+		if( controlNarrativa.entregarMensaje(mundoJuego.getScore()) != null) {
+			SpaceNavigation.getInstance().getFont().draw(batch,controlNarrativa.entregarMensaje(mundoJuego.getScore()),300,770);
 		}
 		//dibujar balas
 		for (int i = 0; i<mundoJuego.largoDeBalas(); i++) {  
