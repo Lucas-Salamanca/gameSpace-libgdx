@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-
+import com.mygdx.game.disparos.Bullet;
 
 public class Nave4 {
 	
@@ -109,7 +109,7 @@ public class Nave4 {
     }
     public boolean checkCollision(Bullet b) {
         if (this.getArea().overlaps(b.getArea())) {
-            // Lógica de daño a la nave cuando la impacta una bala
+            // Lï¿½gica de daï¿½o a la nave cuando la impacta una bala
             vidas--; 	
             herido = true;
             tiempoHerido = tiempoHeridoMax;

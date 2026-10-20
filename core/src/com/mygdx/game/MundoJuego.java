@@ -7,6 +7,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
+import com.mygdx.game.disparos.Bullet;
 
 public class MundoJuego {
 	private int score;
