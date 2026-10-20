@@ -59,10 +59,6 @@ public class PantallaJuego implements Screen {
 		SpaceNavigation.getInstance().getFont().draw(batch, str, 10, 30);
 		SpaceNavigation.getInstance().getFont().draw(batch, "Score:"+mundoJuego.getScore(), Gdx.graphics.getWidth()-150, 30);
 		SpaceNavigation.getInstance().getFont().draw(batch, "HighScore:"+SpaceNavigation.getInstance().getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
-		//game.getFont().getData().setScale(2f);		
-		//game.getFont().draw(batch, str, 10, 30);
-		//game.getFont().draw(batch, "Score:"+mundoJuego.getScore(), Gdx.graphics.getWidth()-150, 30);
-		//game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
 
 	@Override
@@ -78,7 +74,19 @@ public class PantallaJuego implements Screen {
 
 		batch.begin();
 		dibujaEncabezado();
-
+		if(mundoJuego.getScore() == 0) {
+			SpaceNavigation.getInstance().getFont().draw(batch,"Buscando señales de rescate... Sin resultados",300,770);
+		}
+		else if(mundoJuego.getScore() >= 50 && mundoJuego.getScore() <= 60) {
+			SpaceNavigation.getInstance().getFont().draw(batch, "Fragmento recurepado: \n"
+					+ "'...la flota principal fue destruida en el sector 4...'",300,770);
+		}else if(mundoJuego.getScore() >= 100 && mundoJuego.getScore() <=110) {
+			SpaceNavigation.getInstance().getFont().draw(batch,"Fragmento recuperado: \n"
+					+ "'...el artefacto enemigo no debe caer en manos de la federacion...'",300,770);
+		}else if(mundoJuego.getScore() >= 150 && mundoJuego.getScore() <= 160) {
+			SpaceNavigation.getInstance().getFont().draw(batch,"Archivo descifrado por completo: \n"
+					+ "'Tu eres la ultima esperanza de la base estelar, Sobrevive",300,770);
+		}
 		//dibujar balas
 		for (int i = 0; i<mundoJuego.largoDeBalas(); i++) {  
 			Bullet b = mundoJuego.balaActual(i);
