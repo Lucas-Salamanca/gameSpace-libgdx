@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.mygdx.game.PowerUps.PowerUp;
 import com.mygdx.game.disparos.Bullet;
 
 public class PantallaJuego implements Screen {
@@ -48,6 +48,8 @@ public class PantallaJuego implements Screen {
 		texturas.put("Tanque", new Texture(Gdx.files.internal("NaveTanque.png")));
 		texturas.put("Tirador", new Texture(Gdx.files.internal("NaveTirador.png")));
 		texturas.put("Bala",new Texture(Gdx.files.internal("Rocket2.png")));
+		texturas.put("Curacion",new Texture(Gdx.files.internal("corazon.png")));
+		texturas.put("Daño",new Texture(Gdx.files.internal("daño.jpg")));
 		
 		mundoJuego = new MundoJuego(ronda,vidas,score,velXAsteroides,velYAsteroides,cantAsteroides,texturas);
 	}
@@ -72,6 +74,7 @@ public class PantallaJuego implements Screen {
 		mundoJuego.colisionEntreEnemigos();
 		mundoJuego.procesarBalaEnemiga(delta);
 		mundoJuego.colisionEnemigoNave();
+		mundoJuego.actualizarPowerUps(delta,texturas);
 
 		batch.begin();
 		dibujaEncabezado();
@@ -89,6 +92,10 @@ public class PantallaJuego implements Screen {
 	    	 b.draw(batch);
 	     }
 	     
+	     for(int i = 0; i<mundoJuego.largoPowerUps(); i++) {
+	    	 PowerUp p = mundoJuego.powerUpActual(i);
+	    	 p.draw(batch);
+	     }
 	     
 	      mundoJuego.nave4().draw(batch, mundoJuego);
 	      

@@ -7,7 +7,7 @@ import com.mygdx.game.disparos.BulletStrategy;
 // Builder de naves: define los pasos para construir una nave.
 // Cada tipo de nave implementa esta interfaz con su propio builder.
 public interface NaveBuilder {
-    NaveBuilder posicion(int x, int y);                     // posición inicial
+    NaveBuilder posicion(int x, int y);                     // posicion inicial
     NaveBuilder sprite(Texture tx);                         // imagen de la nave
     NaveBuilder sonidoHerido(Sound sonido);                 // sonido al ser herida
     NaveBuilder bala(Texture txBala, Sound soundBala);      // imagen y sonido de las balas

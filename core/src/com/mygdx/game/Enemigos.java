@@ -87,8 +87,8 @@ public class Enemigos
 		this.ySpeed = ySpeed;
 	}
 	
-    public void recibirDanio() {
-    	vidas--;
+    public void recibirDanio(int d) {
+    	vidas -= d;
     }
     public boolean estaMuerto() {
     	return vidas <= 0;

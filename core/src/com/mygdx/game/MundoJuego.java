@@ -6,6 +6,10 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.PowerUps.Curacion;
+import com.mygdx.game.PowerUps.Danio;
+import com.mygdx.game.PowerUps.PowerUp;
+import com.mygdx.game.PowerUps.PowerUpsEffecto;
 import com.mygdx.game.disparos.*;
 import com.mygdx.game.naves.*;
 
@@ -23,6 +27,11 @@ public class MundoJuego
 	private ArrayList<Enemigos> enemigos2 = new ArrayList<>();
 	private ArrayList<Bullet> balasEnemigo = new ArrayList<>();
 	private ArrayList<Bullet> balas = new ArrayList<>();
+	private ArrayList<PowerUp> powerUps = new ArrayList<>();
+	
+	private float tiempoAparecerPowerUp = 0f;
+	private final float tiempoPowerUp = 10.0f; 
+	private Random randomSpawn = new Random();
 	
 	//private SpaceNavigation game;
 	
@@ -85,7 +94,7 @@ public class MundoJuego
 					{
 	            		//explosionSound.play(0.10f);
 	            		b.setDestruido(true);
-	            		e.recibirDanio();
+	            		e.recibirDanio(nave.getDanio());
 	            		
 	            		if(e.estaMuerto())
 						{
@@ -202,6 +211,65 @@ public class MundoJuego
 		return false;
 	}
 
+	public void actualizarPowerUps(float delta,HashMap<String, Texture> texturas) {
+		// se Acumula el tiempo transcurrido en segundos
+		tiempoAparecerPowerUp += delta;
+
+	    //Si pasaron 20 segundos, se genera el power-up y reiniciamos el reloj
+	    if (tiempoAparecerPowerUp >= tiempoPowerUp) {
+	        generarPowerUpAleatorio(texturas);
+	        tiempoAparecerPowerUp = 0f; // Reinicia el cronómetro a 0
+	    }
+		
+		for (int i = 0; i < powerUps.size(); i++) {
+	        PowerUp p = powerUps.get(i);
+	        
+	        // Si ya fue recolectado, lo eliminamos de la lista
+	        if (p.isRecolectado()) {
+	            powerUps.remove(i);
+	            i--;
+	            continue;
+	        }
+
+	        // Si la nave colisiona con el power-up, se aplica el efecto
+	        if (nave.getArea().overlaps(p.getArea())) {
+	            p.aplicarA(nave);
+	        }
+	    }
+	}
+
+	public void generarPowerUpAleatorio(HashMap<String, Texture> texturas) {
+	    // Coordenadas aleatorias dentro del ancho y alto del juego (ej: ancho 1200, alto 800)
+	    int x = randomSpawn.nextInt(1000);
+	    int y = 50 + randomSpawn.nextInt (700);
+
+	    PowerUpsEffecto efecto;
+	    String claveTextura;
+
+	    // 50% de probabilidad de que sea curación o aumento de daño
+	    if (randomSpawn.nextBoolean()) {
+	        efecto = new Curacion();
+	        claveTextura = "Curacion"; // Asegúrate de tener esta textura cargada
+	    } else {
+	        efecto = new Danio();
+	        claveTextura = "Daño";   // Asegúrate de tener esta textura cargada
+	    }
+
+	    // Creamos el power-up y lo añadimos a la lista
+	    PowerUp nuevoPowerUp = new PowerUp(x, y, texturas.get(claveTextura), efecto);
+	    agregarPowerUp(nuevoPowerUp);
+	}
+	
+	public void agregarPowerUp(PowerUp p) {
+	    powerUps.add(p);
+	} 
+	
+	public int largoPowerUps() {
+		return powerUps.size();
+	}
+	public PowerUp powerUpActual(int i) {
+		return powerUps.get(i);
+	}
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
     }

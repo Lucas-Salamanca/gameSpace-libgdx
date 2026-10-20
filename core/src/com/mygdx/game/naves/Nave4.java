@@ -16,6 +16,7 @@ import com.mygdx.game.disparos.*;
 public class Nave4 {
     private boolean destruida = false;
     private int vidas;
+    private int danio = 1;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -120,4 +121,11 @@ public class Nave4 {
     public int getY() { return (int) spr.getY(); }
     public void setVidas(int vidas2) { vidas = vidas2; }
     public Rectangle getArea() { return spr.getBoundingRectangle(); }
+    
+    public int getDanio() {
+    	return danio;
+    }
+    public void setDanio(int d) {
+    	danio = d;
+    }
 }
