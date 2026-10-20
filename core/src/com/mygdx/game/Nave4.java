@@ -51,16 +51,22 @@ public class Nave4
         	
 	        
 	        // que se mantenga dentro de los bordes de la ventana
-	        /*
-	        if (x+xVel < 0 || x+xVel+spr.getWidth() > Gdx.graphics.getWidth())
-	        	xVel*=-1;
-	        if (y+yVel < 0 || y+yVel+spr.getHeight() > Gdx.graphics.getHeight())
-	        	yVel*=-1;
-	        	*/
-	        if (x+xVel < 0 || x+xVel+spr.getWidth() > 1200)
-	        	xVel*=-1;
-	        if (y+yVel < 0 || y+yVel+spr.getHeight() > 800)
-	        	yVel*=-1;
+	        
+	        if(x < 0) {
+	        	x = 0;
+	        }
+	        if(x + spr.getWidth() > 1200) {
+	        	x = 1200 - spr.getWidth();
+	        }
+	        
+	        if(y < 0) {
+	        	y = 0;
+	        }
+	        if(y + spr.getWidth() > 800) {
+	        	y = 800 - spr.getHeight();
+	        }
+	        
+
 	        
 	        
 	        spr.setPosition(x, y);   
@@ -75,7 +81,7 @@ public class Nave4
  		 }
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {         
-          Bullet  bala = new Bullet(spr.getX() + spr.getWidth() / 2-5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+          Bullet  bala = new Bullet(spr.getX() + spr.getWidth() / 2-5, spr.getY() + spr.getHeight() - 5, txBala, new MovimientoRecto(0,180));
 	      juego.agregarBala(bala);
 	      soundBala.play();
         }
