@@ -6,8 +6,9 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-
 import com.mygdx.game.disparos.*;
+import com.mygdx.game.naves.*;
+
 
 public class MundoJuego
 {
@@ -38,12 +39,13 @@ public class MundoJuego
 		this.cantEnemigos = cantEnemigos;
 		
 	    // cargar imagen de la nave, 64x64   
-	    nave = new Nave4(Gdx.graphics.getWidth()/2-50,30,texturas.get("Nave"),
-	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
-	    				texturas.get("Bala"), 
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
-		
-		nave.setVidas(vidas);
+		nave = new NaveBasicaBuilder()
+        	.posicion(Gdx.graphics.getWidth()/2-50, 30)
+        	.sprite(texturas.get("Nave"))
+        	.sonidoHerido(Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")))
+        	.bala(texturas.get("Bala"), Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")))
+        	.vidas(vidas)
+        	.build();
 
 		//crear asteroides
 		Random r = new Random();
