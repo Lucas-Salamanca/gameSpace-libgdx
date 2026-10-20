@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import com.mygdx.game.disparos.Bullet;
+import com.mygdx.game.disparos.*;
 
-public class Nave4 {
-	
+public class Nave4
+{
 	private boolean destruida = false;
     private int vidas = 5;
     private float xVel = 0;
@@ -25,7 +25,8 @@ public class Nave4 {
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
     
-    public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+    public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala)
+    {
     	sonidoHerido = soundChoque;
     	this.soundBala = soundBala;
     	this.txBala = txBala;
@@ -33,13 +34,15 @@ public class Nave4 {
     	spr.setPosition(x, y);
     	//spr.setOriginCenter();
     	spr.setBounds(x, y, 45, 45);
-
     }
-    public void draw(SpriteBatch batch, MundoJuego juego){
+
+    public void draw(SpriteBatch batch, MundoJuego juego)
+    {
         float x =  spr.getX();
         float y =  spr.getY();
         float vel = 300f * Gdx.graphics.getDeltaTime();
-        if (!herido) {
+        if (!herido)
+        {
 	        // que se mueva con teclado
 	        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) x -= vel;
 	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) x += vel;
@@ -72,7 +75,7 @@ public class Nave4 {
  		 }
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {         
-          Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,0,3,txBala);
+          Bullet  bala = new Bullet(spr.getX() + spr.getWidth() / 2-5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
 	      juego.agregarBala(bala);
 	      soundBala.play();
         }

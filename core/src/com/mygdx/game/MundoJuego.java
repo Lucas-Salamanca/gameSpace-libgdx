@@ -7,9 +7,10 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import com.mygdx.game.disparos.Bullet;
+import com.mygdx.game.disparos.*;
 
-public class MundoJuego {
+public class MundoJuego
+{
 	private int score;
 	private int ronda;
 	private int velXEnemigos; 
@@ -24,9 +25,11 @@ public class MundoJuego {
 	
 	//private SpaceNavigation game;
 	
-	public MundoJuego( int ronda, int vidas, int score,  
-			int velXEnemigos, int velYEnemigos, int cantEnemigos, HashMap <String, Texture> texturas) {
-		
+	public MundoJuego(
+		int ronda, int vidas, int score,  
+		int velXEnemigos, int velYEnemigos,
+		int cantEnemigos, HashMap <String, Texture> texturas)
+	{
 		//this.game = game;
 		this.ronda = ronda;
 		this.score = score;
@@ -41,134 +44,152 @@ public class MundoJuego {
 	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
 		
 		nave.setVidas(vidas);
+
 		//crear asteroides
 		Random r = new Random();
-	    for (int i = 0; i < cantEnemigos; i++) {
+	    for (int i = 0; i < cantEnemigos; i++)
+		{
 	    	int x = r.nextInt(1200);
 	    	int y = 50+r.nextInt(800-50);
 	    	int vx = velXEnemigos+r.nextInt(4);
 	    	int vy = velYEnemigos+r.nextInt(4);
 	    	
 	    	Enemigos e;
-	    	if(r.nextBoolean()) {
+	    	if(r.nextBoolean())
 	    		e = new Tanque(x,y,vx,vy,texturas.get("Tanque"));
-	    	}else {
+
+	    	else
 	    		e = new Tirador(x,y,vx,vy,texturas.get("Tirador"));
-	    	}
+
 	    	enemigos1.add(e);
 	    	enemigos2.add(e);
-		
 	    }
 	}
 	
-	public void colisionBalaEnemigo() {
-		if (!nave.estaHerido()) {
-			for (int i = 0; i < balas.size(); i++) {
+	public void colisionBalaEnemigo(float delta)
+	{
+		if (!nave.estaHerido())
+		{
+			for (int i = 0; i < balas.size(); i++)
+			{
 	            Bullet b = balas.get(i);
-	            b.update();
-	            for (int j = 0; j < enemigos1.size(); j++) { 
+	            b.update(delta);
+
+	            for (int j = 0; j < enemigos1.size(); j++)
+				{ 
 	            	Enemigos e = enemigos1.get(j);
-	            	if(b.getArea().overlaps(e.getArea())) {
+
+	            	if(b.getArea().overlaps(e.getArea()))
+					{
 	            		//explosionSound.play(0.10f);
 	            		b.setDestruido(true);
 	            		e.recibirDanio();
 	            		
-	            		if(e.estaMuerto()) {
+	            		if(e.estaMuerto())
+						{
 	            			enemigos1.remove(j);
 	            			enemigos2.remove(j);
 	            			j--;
 	            			score+=10;
-	            			if(score > SpaceNavigation.getInstance().getHighScore()) {
+
+	            			if(score > SpaceNavigation.getInstance().getHighScore())
 	            				SpaceNavigation.getInstance().setHighScore(score);
-	            			}
 	            		}
+
 	            		break;
 	            	}   	  
 	  	        }
-	                
-	         
-	            if (b.isDestroyed()) {
+
+	            if (b.isDestroyed())
+				{
 	                balas.remove(b);
 	                i--; //para no saltarse 1 tras eliminar del arraylist
 	            }
-	      }
+	    	}
 		}
 	}
 	
-	public void updateEnemigo(float delta,HashMap<String,Texture> texturas) {
-		if (!nave.estaHerido()) {
-
+	public void updateEnemigo(float delta, HashMap<String,Texture> texturas)
+	{
+		if (!nave.estaHerido())
+		{
 			//actualizar movimiento de asteroides dentro del area
-			for (Enemigos enemigo : enemigos1) {
+			for (Enemigos enemigo : enemigos1)
+			{
+				/* Actualizar posicion de enemigo */
 				enemigo.update();
-				if(enemigo.debeDisparar(delta)) {
 
-					Bullet balasCreada = new Bullet(enemigo.getx(),enemigo.gety(),0,-5,texturas.get("Bala"));
+				/* Validar si enemigo debe disparar */
+				if(enemigo.debeDisparar(delta))
+				{
+					Bullet balasCreada = new Bullet(enemigo.getx(), enemigo.gety(), texturas.get("Bala"), new MovimientoRecto(0, -300));
 					balasEnemigo.add(balasCreada);
-		        		  
-					
 				}
-		          
 			}
 		}
 	}
 	
-	public void colisionEntreEnemigos() {
-		if (!nave.estaHerido()) {
+	public void colisionEntreEnemigos()
+	{
+		if (!nave.estaHerido())
+		{
 			//colisiones entre asteroides y sus rebotes  
-			for (int i=0;i<enemigos1.size();i++) {
-				Enemigos ball1 = enemigos1.get(i);   
-				for (int j=0;j<enemigos2.size();j++) {
+			for (int i=0;i<enemigos1.size();i++)
+			{
+				Enemigos ball1 = enemigos1.get(i);
+
+				for (int j=0;j<enemigos2.size();j++)
+				{
 					Enemigos ball2 = enemigos2.get(j); 
-					if (i<j) {
+					if (i<j)
 						ball1.checkCollision(ball2);
-		     
-					}
-		        	}
+		        }
 		    }
 		}
-
 	}
 	
-	public void procesarBalaEnemiga() {
-		if (!nave.estaHerido()) {
-			for (int i = 0; i < balasEnemigo.size(); i++) {
+	public void procesarBalaEnemiga(float delta)
+	{
+		if (!nave.estaHerido())
+		{
+			for (int i = 0; i < balasEnemigo.size(); i++)
+			{
 				Bullet be = balasEnemigo.get(i);
-				be.update();
+				be.update(delta);
 					
-	
 				// Colisi�n con la nave principal
-				if (nave.checkCollision(be)) { 
+				if (nave.checkCollision(be)) 
 					be.setDestruido(true);
-				}
 	
-				if (be.isDestroyed()) {
+				if (be.isDestroyed())
+				{
 					balasEnemigo.remove(i);
 					i--;
-					}
+				}
 			}
 		}	
 	}
 	
-
-	
-	public void colisionEnemigoNave() {
-		for (int i = 0; i < enemigos1.size(); i++) {
+	public void colisionEnemigoNave()
+	{
+		for (int i = 0; i < enemigos1.size(); i++)
+		{
 			Enemigos b=enemigos1.get(i);
 
-	    	    
-	        if (nave.checkCollision(b)) {
+	        if (nave.checkCollision(b))
+			{
 	        	//asteroide se destruye con el choque             
 	        	enemigos1.remove(i);
 	        	enemigos2.remove(i);
 	            i--;
-            }
-               	  
+            }  
 		}
 	}
 	
-	public boolean nivelSuperado() {
-		if(enemigos1.size() == 0) {
+	public boolean nivelSuperado()
+	{
+		if(enemigos1.size() == 0)
+		{
 			ronda ++;
 			velXEnemigos ++;
 			velYEnemigos ++;
@@ -178,6 +199,7 @@ public class MundoJuego {
 		}
 		return false;
 	}
+
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
     }
@@ -239,7 +261,6 @@ public class MundoJuego {
 	public void setRondas(int i) {
 		ronda = i;
 	}
-	
 	public Nave4 nave4() {
 		return nave;
 	}

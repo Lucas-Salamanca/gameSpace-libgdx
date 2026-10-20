@@ -24,8 +24,8 @@ public class PantallaJuego implements Screen {
 	private MundoJuego mundoJuego;
 	private HashMap<String, Texture> texturas; //guarda todas las texturas en un hashmap
 
-	public PantallaJuego( int ronda, int vidas, int score,  
-			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+	public PantallaJuego(int ronda, int vidas, int score, int velXAsteroides, int velYAsteroides, int cantAsteroides)
+	{
 		//this.game = game;
 		
 		//batch = game.getBatch();
@@ -48,14 +48,12 @@ public class PantallaJuego implements Screen {
 		texturas.put("Tirador", new Texture(Gdx.files.internal("NaveTirador.png")));
 		texturas.put("Bala",new Texture(Gdx.files.internal("Rocket2.png")));
 		
-		mundoJuego = new MundoJuego(ronda,vidas,score,velXAsteroides,velYAsteroides,cantAsteroides
-									,texturas);
-        	
+		mundoJuego = new MundoJuego(ronda,vidas,score,velXAsteroides,velYAsteroides,cantAsteroides,texturas);
 	}
 	
     
-	public void dibujaEncabezado() {
-
+	public void dibujaEncabezado()
+	{
 		CharSequence str = "Vidas: "+mundoJuego.nave4().getVidas()+" Ronda: "+mundoJuego.getRondas();
 		SpaceNavigation.getInstance().getFont().getData().setScale(2f);
 		SpaceNavigation.getInstance().getFont().draw(batch, str, 10, 30);
@@ -66,23 +64,26 @@ public class PantallaJuego implements Screen {
 		//game.getFont().draw(batch, "Score:"+mundoJuego.getScore(), Gdx.graphics.getWidth()-150, 30);
 		//game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
+
 	@Override
-	public void render(float delta) {
-		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	public void render(float delta)
+	{
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		  mundoJuego.colisionBalaEnemigo();
-		  mundoJuego.updateEnemigo(delta, texturas);
-		  mundoJuego.colisionEntreEnemigos();
-		  mundoJuego.procesarBalaEnemiga();
-		  mundoJuego.colisionEnemigoNave();
+		mundoJuego.colisionBalaEnemigo(delta);
+		mundoJuego.updateEnemigo(delta, texturas);
+		mundoJuego.colisionEntreEnemigos();
+		mundoJuego.procesarBalaEnemiga(delta);
+		mundoJuego.colisionEnemigoNave();
 
-		  batch.begin();
-		  dibujaEncabezado();
-	      //dibujar balas
-	     for (int i = 0; i<mundoJuego.largoDeBalas(); i++) {  
-	    	 Bullet b = mundoJuego.balaActual(i);
-	          b.draw(batch);
-	      }
+		batch.begin();
+		dibujaEncabezado();
+
+		//dibujar balas
+		for (int i = 0; i<mundoJuego.largoDeBalas(); i++) {  
+			Bullet b = mundoJuego.balaActual(i);
+			b.draw(batch);
+		}
 	     
 	     for(int i = 0; i<mundoJuego.largoDeBalasEnemigo(); i++) {
 	    	 Bullet b = mundoJuego.balaActualEnemigo(i);

@@ -5,25 +5,26 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import com.mygdx.game.Enemigos;
+
 public class Bullet
 {
-	private int xSpeed;
-	private int ySpeed;
+	private BulletStrategy estrategia;
 	private boolean destroyed = false;
 	private Sprite spr;
 
-	public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx)
+	public Bullet(float x, float y, Texture tx, BulletStrategy estrategia)
 	{
-		spr = new Sprite(tx);
-		spr.setPosition(x, y);
-		this.xSpeed = xSpeed;
-		this.ySpeed = ySpeed;
+		this.spr = new Sprite(tx);
+		this.spr.setPosition(x, y);
+
+		this.estrategia = estrategia;
 	}
 
-	public void update()
+	public void update(float delta)
 	{
 		/* Actualizar posicion del la bala */
-		spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
+		estrategia.update(this, delta);
 
 		/* Verificar posicion de la bala en los limites del mundo */
 		if (spr.getX() < 0 || spr.getX()+spr.getWidth() > 1200)	/* xPos */
@@ -53,16 +54,15 @@ public class Bullet
 
 		return false;
 	}
-	
-	public boolean isDestroyed() { return destroyed; }
-	
-	public Rectangle getArea()
-	{
-		return spr.getBoundingRectangle();
-	}
 
-	public void setDestruido(boolean destruido)
-	{
-		this.destroyed = destruido;
-	}
+	/* ===== GET ===== */
+	public boolean isDestroyed() { return destroyed; }
+	public Rectangle getArea() { return spr.getBoundingRectangle(); }
+	public float getX() { return spr.getX(); }
+	public float getY() { return spr.getY(); }
+
+	/* ===== SET ===== */
+
+	public void setDestruido(boolean destruido) { this.destroyed = destruido; }
+	public void setPosition(float x, float y) { spr.setPosition(x, y); }
 }
