@@ -1,6 +1,6 @@
 package com.mygdx.game.disparos;
 
-public class MovimientoRecto implements BulletStrategy
+public class MovimientoRecto implements EstrategiaMovimientoBala
 {
     private final float xSpeed;
     private final float ySpeed;

@@ -27,17 +27,20 @@ public class Nave4 {
     private int tiempoHeridoMax;
     private int tiempoHerido;
     private float velocidad;
-    private BulletStrategy estrategiaDisparo;
+    private EstrategiaMovimientoBala movimientoBala;
+    private EstrategiaImpactoBala impactoBala;
 
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,
-                 int vidas, float velocidad, int tiempoHeridoMax, BulletStrategy estrategiaDisparo) {
+                 int vidas, float velocidad, int tiempoHeridoMax,
+                 EstrategiaMovimientoBala movimientoBala, EstrategiaImpactoBala impactoBala) {
         this.sonidoHerido = soundChoque;
         this.soundBala = soundBala;
         this.txBala = txBala;
         this.vidas = vidas;
         this.velocidad = velocidad;
         this.tiempoHeridoMax = tiempoHeridoMax;
-        this.estrategiaDisparo = estrategiaDisparo;
+        this.movimientoBala = movimientoBala;
+        this.impactoBala = impactoBala;
         spr = new Sprite(tx);
         spr.setBounds(x, y, 45, 45);
     }
@@ -70,7 +73,7 @@ public class Nave4 {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5,
                                      spr.getY() + spr.getHeight() - 5,
-                                     txBala, estrategiaDisparo);       // <-- cambiado
+                                     txBala, movimientoBala, impactoBala);  // <-- cambiado
             juego.agregarBala(bala);
             soundBala.play();
         }

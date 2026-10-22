@@ -7,24 +7,30 @@ import com.badlogic.gdx.math.Rectangle;
 
 import com.mygdx.game.Enemigos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Bullet
 {
-	private BulletStrategy estrategia;
+	private EstrategiaMovimientoBala estrategiaMovimiento;
+	private EstrategiaImpactoBala estrategiaImpacto;
 	private boolean destroyed = false;
 	private Sprite spr;
+	private Set<Enemigos> enemigosImpactados = new HashSet();
 
-	public Bullet(float x, float y, Texture tx, BulletStrategy estrategia)
+	public Bullet(float x, float y, Texture tx, EstrategiaMovimientoBala estrategiaMovimiento, EstrategiaImpactoBala estrategiaImpacto)
 	{
 		this.spr = new Sprite(tx);
 		this.spr.setPosition(x, y);
 
-		this.estrategia = estrategia;
+		this.estrategiaMovimiento = estrategiaMovimiento;
+		this.estrategiaImpacto = estrategiaImpacto;
 	}
 
 	public void update(float delta)
 	{
 		/* Actualizar posicion del la bala */
-		estrategia.update(this, delta);
+		estrategiaMovimiento.update(this, delta);
 
 		/* Verificar posicion de la bala en los limites del mundo */
 		if (spr.getX() < 0 || spr.getX()+spr.getWidth() > 1200)	/* xPos */
@@ -45,9 +51,10 @@ public class Bullet
 	public boolean checkCollision(Enemigos b2)
 	{
 		/* Verificar si un enemigo es alcanzado por la bala */
-		if(spr.getBoundingRectangle().overlaps(b2.getArea()))
+		if(spr.getBoundingRectangle().overlaps(b2.getArea()) && !enemigosImpactados.contains(b2))
 		{
-			this.destroyed = true;
+			enemigosImpactados.add(b2);
+			this.destroyed = estrategiaImpacto.destruirBalaImpacto();
 
 			return true;
 		}

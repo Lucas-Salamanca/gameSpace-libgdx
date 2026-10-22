@@ -1,6 +1,6 @@
 package com.mygdx.game.disparos;
 
-public interface BulletStrategy
+public interface EstrategiaMovimientoBala
 {
     void update(Bullet bullet, float delta);
 }

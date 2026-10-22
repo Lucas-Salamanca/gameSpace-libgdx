@@ -77,48 +77,46 @@ public class MundoJuego
 	    }
 	}
 	
-	public void colisionBalaEnemigo(float delta)
-	{
-		if (!nave.estaHerido())
-		{
-			for (int i = 0; i < balas.size(); i++)
-			{
-	            Bullet b = balas.get(i);
-	            b.update(delta);
+	public void colisionBalaEnemigo(float delta) {
+		if (!nave.estaHerido()) {
+			for (int i = 0; i < balas.size(); i++) {
+				Bullet b = balas.get(i);
+				b.update(delta);
 
-	            for (int j = 0; j < enemigos1.size(); j++)
-				{ 
-	            	Enemigos e = enemigos1.get(j);
+				for (int j = 0; j < enemigos1.size(); j++) {
+					Enemigos e = enemigos1.get(j);
 
-	            	if(b.getArea().overlaps(e.getArea()))
-					{
-	            		//explosionSound.play(0.10f);
-	            		b.setDestruido(true);
-	            		e.recibirDanio(nave.getDanio());
-	            		
-	            		if(e.estaMuerto())
-						{
-	            			enemigos1.remove(j);
-	            			enemigos2.remove(j);
-	            			j--;
-	            			score+=10;
+					if (b.checkCollision(e)) {
+						e.recibirDanio(nave.getDanio());
 
-	            			if(score > SpaceNavigation.getInstance().getHighScore())
-	            				SpaceNavigation.getInstance().setHighScore(score);
-	            		}
+						if (e.estaMuerto()) {
+							enemigos1.remove(j);
+							enemigos2.remove(j);
+							j--;
 
-	            		break;
-	            	}   	  
-	  	        }
+							score += 10;
 
-	            if (b.isDestroyed())
-				{
-	                balas.remove(b);
-	                i--; //para no saltarse 1 tras eliminar del arraylist
-	            }
-	    	}
+							if (score > SpaceNavigation.getInstance().getHighScore()) {
+								SpaceNavigation.getInstance().setHighScore(score);
+							}
+						}
+
+						// La bala normal se destruye al impactar.
+						// La perforante puede continuar hacia otros enemigos.
+						if (b.isDestroyed()) {
+							break;
+						}
+					}
+				}
+
+				if (b.isDestroyed()) {
+					balas.remove(i);
+					i--;
+				}
+			}
 		}
-	}
+}
+
 	
 	public void updateEnemigo(float delta, HashMap<String,Texture> texturas)
 	{
@@ -133,7 +131,7 @@ public class MundoJuego
 				/* Validar si enemigo debe disparar */
 				if(enemigo.debeDisparar(delta))
 				{
-					Bullet balasCreada = new Bullet(enemigo.getx(), enemigo.gety(), texturas.get("Bala"), new MovimientoRecto(0, -300));
+					Bullet balasCreada = new Bullet(enemigo.getx(), enemigo.gety(), texturas.get("Bala"), new MovimientoRecto(0, -300), new ImpactoNormal());
 					balasEnemigo.add(balasCreada);
 				}
 			}
@@ -218,7 +216,7 @@ public class MundoJuego
 	    //Si pasaron 20 segundos, se genera el power-up y reiniciamos el reloj
 	    if (tiempoAparecerPowerUp >= tiempoPowerUp) {
 	        generarPowerUpAleatorio(texturas);
-	        tiempoAparecerPowerUp = 0f; // Reinicia el cronómetro a 0
+	        tiempoAparecerPowerUp = 0f; // Reinicia el cronï¿½metro a 0
 	    }
 		
 		for (int i = 0; i < powerUps.size(); i++) {
@@ -246,16 +244,16 @@ public class MundoJuego
 	    PowerUpsEffecto efecto;
 	    String claveTextura;
 
-	    // 50% de probabilidad de que sea curación o aumento de daño
+	    // 50% de probabilidad de que sea curaciï¿½n o aumento de daï¿½o
 	    if (randomSpawn.nextBoolean()) {
 	        efecto = new Curacion();
-	        claveTextura = "Curacion"; // Asegúrate de tener esta textura cargada
+	        claveTextura = "Curacion"; // Asegï¿½rate de tener esta textura cargada
 	    } else {
 	        efecto = new Danio();
-	        claveTextura = "Daño";   // Asegúrate de tener esta textura cargada
+	        claveTextura = "Daï¿½o";   // Asegï¿½rate de tener esta textura cargada
 	    }
 
-	    // Creamos el power-up y lo añadimos a la lista
+	    // Creamos el power-up y lo aï¿½adimos a la lista
 	    PowerUp nuevoPowerUp = new PowerUp(x, y, texturas.get(claveTextura), efecto);
 	    agregarPowerUp(nuevoPowerUp);
 	}
