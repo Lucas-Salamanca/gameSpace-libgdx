@@ -216,7 +216,7 @@ public class MundoJuego
 	    //Si pasaron 20 segundos, se genera el power-up y reiniciamos el reloj
 	    if (tiempoAparecerPowerUp >= tiempoPowerUp) {
 	        generarPowerUpAleatorio(texturas);
-	        tiempoAparecerPowerUp = 0f; // Reinicia el cronï¿½metro a 0
+	        tiempoAparecerPowerUp = 0f; // Reinicia el cronometro a 0
 	    }
 		
 		for (int i = 0; i < powerUps.size(); i++) {
@@ -250,10 +250,10 @@ public class MundoJuego
 	        claveTextura = "Curacion"; // Asegï¿½rate de tener esta textura cargada
 	    } else {
 	        efecto = new Danio();
-	        claveTextura = "Daï¿½o";   // Asegï¿½rate de tener esta textura cargada
+	        claveTextura = "Danio";   // Asegï¿½rate de tener esta textura cargada
 	    }
 
-	    // Creamos el power-up y lo aï¿½adimos a la lista
+	    // Creamos el power-up y se añade a la lista
 	    PowerUp nuevoPowerUp = new PowerUp(x, y, texturas.get(claveTextura), efecto);
 	    agregarPowerUp(nuevoPowerUp);
 	}

@@ -49,7 +49,7 @@ public class PantallaJuego implements Screen {
 		texturas.put("Tirador", new Texture(Gdx.files.internal("NaveTirador.png")));
 		texturas.put("Bala",new Texture(Gdx.files.internal("Rocket2.png")));
 		texturas.put("Curacion",new Texture(Gdx.files.internal("corazon.png")));
-		texturas.put("Daño",new Texture(Gdx.files.internal("daño.jpg")));
+		texturas.put("Danio",new Texture(Gdx.files.internal("daño.jpg")));
 		
 		mundoJuego = new MundoJuego(ronda,vidas,score,velXAsteroides,velYAsteroides,cantAsteroides,texturas);
 	}

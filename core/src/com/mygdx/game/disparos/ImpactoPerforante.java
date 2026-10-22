@@ -3,5 +3,5 @@ package com.mygdx.game.disparos;
 public class ImpactoPerforante implements EstrategiaImpactoBala
 {
     @Override
-    public boolean derstruirBalaImpacto() { return false; }    
+    public boolean destruirBalaImpacto() { return false; }    
 }
